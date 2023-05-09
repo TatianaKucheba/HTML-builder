@@ -15,6 +15,23 @@ async function copyDir() {
       await fs.copyFile(filePath, fileCopyPath);
     }
   }
+
+  const filesCopy = await fs.readdir(path.join(workDir, "files-copy"));
+
+  for (const file of filesCopy) {
+    const filePath = path.join(workDir, "files", file);
+    const fileCopyPath = path.join(workDir, "files-copy", file);
+    try {
+      await fs.stat(filePath);
+    } catch (err) {
+      if (err.code === "ENOENT") {
+        // The file does not exist in 'files' directory
+        await fs.unlink(fileCopyPath);
+      } else {
+        throw err;
+      }
+    }
+  }
 }
 
 copyDir()
