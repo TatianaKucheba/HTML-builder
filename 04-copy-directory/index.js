@@ -25,7 +25,6 @@ async function copyDir() {
       await fs.stat(filePath);
     } catch (err) {
       if (err.code === "ENOENT") {
-        // The file does not exist in 'files' directory
         await fs.unlink(fileCopyPath);
       } else {
         throw err;
